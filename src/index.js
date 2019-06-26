@@ -1,11 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
-import './index.scss';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
+import { AnimatedSwitch } from 'react-router-transition';
+import { BrowserRouter, Route, Redirect } from 'react-router-dom';
+import { Home, Login, Default, Dashboard } from './pages';
 import * as serviceWorker from './serviceWorker';
+import './index.scss';
 
 const cacheUser = () => {
     const user = localStorage.getItem('user') && JSON.parse(localStorage.getItem('user'));
@@ -74,12 +73,19 @@ class App extends React.Component {
     render() {
         return (
             <BrowserRouter>
-                <Switch>
+                <AnimatedSwitch
+                    atEnter={{ opacity: 0 }}
+                    atLeave={{ opacity: 0 }}
+                    atActive={{ opacity: 1 }}
+                    className="switch-wrapper"
+                >
                     <PropsRoute path="/" exact={true} component={Login}  {...this.state} />
-                    <PrivateRoute path="/exam/:id" exact={true} component={Home} {...this.state} />
-                    <PrivateRoute path="/exam/edit/:id" exact={true} component={Home} {...this.state} />
+                    <PrivateRoute path="/users" exact={true} component={Default} {...this.state} />
                     <PrivateRoute path="/dashboard" exact={true} component={Dashboard} {...this.state} />
-                </Switch>
+                    <PrivateRoute path="/exam/create" exact={true} component={Default} {...this.state} />
+                    <PrivateRoute path="/exam/view/:id" exact={true} component={Home} {...this.state} />
+                    <PrivateRoute path="/exam/edit/:id" exact={true} component={Home} {...this.state} />
+                </AnimatedSwitch>
             </ BrowserRouter>
         )
     }

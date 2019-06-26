@@ -29,6 +29,59 @@ code {
     position: fixed;
     align-items: start;
     box-shadow: $box-shadow;
+    align-content: flex-start;
+  }
+
+  .navbar-brand {
+    margin-bottom: 25px;
+
+    img {
+      margin-right: 10px;
+    }
+  }
+
+  .navbar-list {
+    width: 100%;
+    margin: 0;
+    list-style: none;
+    padding: 0 0 50px;
+
+    li {
+      padding: 0;
+      width: 100%;
+      display: block;
+      background: #f8f9fa;
+      
+      a {
+        color: #888;
+        display: block;
+        padding: 15px 10px;
+        border-top: 1px solid #efefef;
+        transition: all .25s ease-in-out;
+
+        &:hover {
+          color: #333;
+          background: #efefef;
+          text-decoration: none;
+        }
+      }
+      
+      &:last-child {
+        a {
+          border-bottom: 1px solid #efefef;
+        }
+      }
+    }
+
+    &.navbar-list-logout {
+      left: 0;
+      bottom: 0;
+      display: block;
+      padding: 0 16px;
+      margin-bottom: 0;
+      position: absolute;
+      border-bottom: none;
+    }
   }
 }
 
@@ -36,7 +89,8 @@ code {
   &.fixed-navbar {
     max-width: 100%;
     margin-top: 25px;
-    padding-left: 265px;
+    padding-left: 280px;
+    padding-right: 30px;
   }
 }
 
@@ -47,13 +101,14 @@ code {
   overflow: auto;
   align-items: center;
   justify-content: center;
-  background: rgb(38,132,195);
-  background: linear-gradient(135deg, rgba(38,132,195,1) 0%, rgba(26,68,107,1) 100%);
+  background: #5d9eca;
+  background: linear-gradient(135deg,#5d9eca,#2d4b67);
 
   .brand-form {
     width: 400px;
     height: 310px;
     display: inline-block;
+    box-shadow: $box-shadow;
     background: url('/brand.jpg');
     border-top-left-radius: $borderRadius;
     border-bottom-left-radius: $borderRadius;
