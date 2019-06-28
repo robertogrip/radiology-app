@@ -1,6 +1,11 @@
 import React from 'react';
 import '../../node_modules/bootstrap/dist/css/bootstrap.css';
 
+//import Api
+import Api from '../utils/api';
+
+Api.users.create({name: 'Roberto Gripa', email: 'roberto.gripaf@gmail.com', level: 'admin'});
+
 class Login extends React.Component {
   constructor() {
     super();
