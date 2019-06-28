@@ -3,7 +3,7 @@
 
 function restApi(Class) {
   const create = (data) => {
-    return fetch(`/.netlify/functions/${Class}/create`, {
+    return fetch(`/.netlify/functions/${Class}-create`, {
       body: JSON.stringify(data),
       method: 'POST'
     }).then(response => {
