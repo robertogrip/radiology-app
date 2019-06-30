@@ -14,7 +14,11 @@ const cacheUser = () => {
 let userValidate = cacheUser() || {};
 
 const loggedIn = () => {
-    return userValidate && ( userValidate.level === 'admin' || userValidate.level === 'user')
+    return userValidate && ( userValidate.level === '2' || userValidate.level === '1')
+}
+
+const adminLoggedIn = () => {
+    return userValidate && userValidate.level === '2'
 }
 
 const renderMergedProps = (component, ...rest) => {
@@ -31,7 +35,7 @@ const PropsRoute = ({ component, ...rest }) => {
                 renderMergedProps(component, routeProps, rest)
             ) : (
                 <Redirect to={{
-                    pathname: 'dashboard',
+                    pathname: adminLoggedIn() ? 'dashboard' : 'exam/list',
                     state: { from: routeProps.location }
                 }}/>
             );
@@ -43,6 +47,21 @@ const PrivateRoute = ({ component, redirectTo, ...rest }) => {
     return (
         <Route {...rest} render={routeProps => {
             return loggedIn() ? (
+                renderMergedProps(component, routeProps, rest)
+            ) : (
+                <Redirect to={{
+                    pathname: redirectTo,
+                    state: { from: routeProps.location }
+                }}/>
+            );
+        }}/>
+    );
+};
+
+const AdminPrivateRoute = ({ component, redirectTo, ...rest }) => {
+    return (
+        <Route {...rest} render={routeProps => {
+            return adminLoggedIn() ? (
                 renderMergedProps(component, routeProps, rest)
             ) : (
                 <Redirect to={{
@@ -80,11 +99,12 @@ class App extends React.Component {
                     className="switch-wrapper"
                 >
                     <PropsRoute path="/" exact={true} component={Login}  {...this.state} />
-                    <PrivateRoute path="/users" exact={true} component={Default} {...this.state} />
-                    <PrivateRoute path="/dashboard" exact={true} component={Dashboard} {...this.state} />
-                    <PrivateRoute path="/exam/create" exact={true} component={Default} {...this.state} />
+                    <AdminPrivateRoute path="/users" exact={true} component={Default} {...this.state} />
+                    <AdminPrivateRoute path="/dashboard" exact={true} component={Dashboard} {...this.state} />
+                    <AdminPrivateRoute path="/exam/create" exact={true} component={Default} {...this.state} />
+                    <PrivateRoute path="/exam/list" exact={true} component={Default} {...this.state} />
                     <PrivateRoute path="/exam/view/:id" exact={true} component={Home} {...this.state} />
-                    <PrivateRoute path="/exam/edit/:id" exact={true} component={Home} {...this.state} />
+                    <AdminPrivateRoute path="/exam/edit/:id" exact={true} component={Home} {...this.state} />
                 </AnimatedSwitch>
             </ BrowserRouter>
         )

@@ -4,8 +4,6 @@ import '../../node_modules/bootstrap/dist/css/bootstrap.css';
 //import Api
 import Api from '../utils/api';
 
-Api.users.create({name: 'Roberto Gripa', email: 'roberto.gripaf@gmail.com', level: 'admin'});
-
 class Login extends React.Component {
   constructor() {
     super();
@@ -19,12 +17,13 @@ class Login extends React.Component {
     const { state, props } = this;
     const { history } = props;
 
-    if ( state && state.examNumber === 'admin' && state.password === '123456' ) {
-      props.updateUser({
-        level: 'admin'
-      });
-      history.push('/dashboard');
-    }
+    Api.auth({login: state.examNumber, password: state.password})
+    .then(result => {
+      if (result && result.success && result.data ) {
+        props.updateUser(result.data);
+        history.push('/dashboard');
+      }
+    });
   }
 
   handleChange(event) {

@@ -1,62 +1,73 @@
 /* Frontend code from src/utils/api.js */
 /* Api methods to call /.netlify/functions */
+const headers =  {'Content-Type': 'application/json'};
+const baseUrl = '//localhost';
+
+const auth = (data) => {
+  return fetch(`${baseUrl}/auth`, {
+    body: JSON.stringify(data),
+    headers,
+    method: 'POST'
+  }).then(response => {
+    return response.json();
+  })
+}
 
 function restApi(Class) {
   const create = (data) => {
-    return fetch(`/.netlify/functions/${Class}-create`, {
+    return fetch(`${baseUrl}/${Class}/create`, {
       body: JSON.stringify(data),
+      headers,
       method: 'POST'
     }).then(response => {
-      return response.json()
-    })
-  }
+      return response.json();
+    });
+  };
   
-  const readAll = () => {
-    return fetch(`/.netlify/functions/${Class}-read-all`).then((response) => {
-      return response.json()
-    })
-  }
+  const get = (id) => {
+    return fetch(`${baseUrl}/${Class}/${id}`).then((response) => {
+      return response.json();
+    });
+  };
+  
+  const getAll = () => {
+    return fetch(`${baseUrl}/${Class}`).then((response) => {
+      return response.json();
+    });
+  };
   
   const update = (id, data) => {
-    return fetch(`/.netlify/functions/${Class}-update/${id}`, {
+    return fetch(`${baseUrl}/${Class}/${id}`, {
       body: JSON.stringify(data),
-      method: 'POST'
+      headers,
+      method: 'PUT'
     }).then(response => {
-      return response.json()
-    })
-  }
+      return response.json();
+    });
+  };
   
   const Delete = (id) => {
-    return fetch(`/.netlify/functions/${Class}-delete/${id}`, {
-      method: 'POST',
+    return fetch(`${baseUrl}/${Class}/${id}`, {
+      headers,
+      method: 'DELETE'
     }).then(response => {
-      return response.json()
-    })
-  }
-  
-  const batchDelete = (ids) => {
-    return fetch(`/.netlify/functions/${Class}-delete-batch`, {
-      body: JSON.stringify({
-        ids
-      }),
-      method: 'POST'
-    }).then(response => {
-      return response.json()
-    })
-  }
+      return response.json();
+    });
+  };
 
   return {
+    get,
     create,
-    readAll,
+    getAll,
     update,
-    delete: Delete,
-    batchDelete: batchDelete
-  }
+    delete: Delete
+  };
 };
 
 const Api = {
+  auth,
   users: new restApi('users'),
-  todos: new restApi('todos')
-}
+  todos: new restApi('exams')
+};
   
 export default Api;
