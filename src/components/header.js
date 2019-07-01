@@ -22,22 +22,24 @@ class Header extends React.Component {
       return (
           <header className="app-header">
             <nav className="navbar navbar-vertical navbar-light bg-light">
-              <Link className="navbar-brand" to="/dashboard">
-                <img src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30" className="d-inline-block align-top" alt="" />
-                Radiology
-              </Link>
-              <ul className="navbar-list">
-                <li>
-                  <Link to="/dashboard">Dashboard</Link>
-                </li>
-                <li>
-                  <Link to="/users">Usuários</Link>
-                </li>
-                <li>
-                  <Link to="/exam/create">Cadastrar exames</Link>
-                </li>
-              </ul>
-              <ul className="navbar-list navbar-list-logout">
+              <div className="navbar-list">
+                <Link className="navbar-brand" to="/dashboard">
+                  <img src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30" className="d-inline-block align-top" alt="" />
+                  Radiology
+                </Link>
+                <ul className="navbar-list">
+                  <li>
+                    <Link to="/dashboard">Dashboard</Link>
+                  </li>
+                  <li>
+                    <Link to="/users">Usuários</Link>
+                  </li>
+                  <li>
+                    <Link to="/exam/create">Cadastrar exame</Link>
+                  </li>
+                </ul>
+              </div>
+              <ul className="navbar-list navbar-bottom-links">
                 <li>
                   <a href="/" onClick={this.logout}>Sair</a>
                 </li>

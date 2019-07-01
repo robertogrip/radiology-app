@@ -25,13 +25,22 @@ function restApi(Class) {
   };
   
   const get = (id) => {
-    return fetch(`${baseUrl}/${Class}/${id}`).then((response) => {
+    return fetch(`${baseUrl}/${Class}/${id}`, {
+      headers,
+      method: 'GET'
+    }).then((response) => {
       return response.json();
     });
   };
   
-  const getAll = () => {
-    return fetch(`${baseUrl}/${Class}`).then((response) => {
+  const getAll = (data) => {
+    return fetch(`${baseUrl}/${Class}`, {
+      headers: {
+        ...headers,
+        ...data
+      },
+      method: 'GET'
+    }).then((response) => {
       return response.json();
     });
   };
@@ -67,7 +76,7 @@ function restApi(Class) {
 const Api = {
   auth,
   users: new restApi('users'),
-  todos: new restApi('exams')
+  exams: new restApi('exams')
 };
   
 export default Api;

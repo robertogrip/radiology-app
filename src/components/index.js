@@ -1,4 +1,5 @@
 import Header from './header';
 import ListExams from './listExams';
+import ListUsers from './listUsers';
 
-export { Header, ListExams };
+export { Header, ListUsers, ListExams };

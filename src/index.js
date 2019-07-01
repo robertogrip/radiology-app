@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { AnimatedSwitch } from 'react-router-transition';
-import { BrowserRouter, Route, Redirect } from 'react-router-dom';
-import { Home, Login, Default, Dashboard } from './pages';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { Home, Login, Users, NotFound, Default, Dashboard } from './pages';
 import * as serviceWorker from './serviceWorker';
 import './index.scss';
 
@@ -92,20 +91,16 @@ class App extends React.Component {
     render() {
         return (
             <BrowserRouter>
-                <AnimatedSwitch
-                    atEnter={{ opacity: 0 }}
-                    atLeave={{ opacity: 0 }}
-                    atActive={{ opacity: 1 }}
-                    className="switch-wrapper"
-                >
+                <Switch>
                     <PropsRoute path="/" exact={true} component={Login}  {...this.state} />
-                    <AdminPrivateRoute path="/users" exact={true} component={Default} {...this.state} />
+                    <AdminPrivateRoute path="/users" exact={true} component={Users} {...this.state} />
                     <AdminPrivateRoute path="/dashboard" exact={true} component={Dashboard} {...this.state} />
                     <AdminPrivateRoute path="/exam/create" exact={true} component={Default} {...this.state} />
                     <PrivateRoute path="/exam/list" exact={true} component={Default} {...this.state} />
                     <PrivateRoute path="/exam/view/:id" exact={true} component={Home} {...this.state} />
                     <AdminPrivateRoute path="/exam/edit/:id" exact={true} component={Home} {...this.state} />
-                </AnimatedSwitch>
+                    <PropsRoute path="/" component={NotFound}  {...this.state} />
+                </Switch>
             </ BrowserRouter>
         )
     }

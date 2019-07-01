@@ -29,7 +29,7 @@ code {
     position: fixed;
     align-items: start;
     box-shadow: $box-shadow;
-    align-content: flex-start;
+    align-content: space-between;
   }
 
   .navbar-brand {
@@ -41,10 +41,10 @@ code {
   }
 
   .navbar-list {
-    width: 100%;
     margin: 0;
+    padding: 0;
+    width: 100%;
     list-style: none;
-    padding: 0 0 50px;
 
     li {
       padding: 0;
@@ -71,16 +71,6 @@ code {
           border-bottom: 1px solid #efefef;
         }
       }
-    }
-
-    &.navbar-list-logout {
-      left: 0;
-      bottom: 0;
-      display: block;
-      padding: 0 16px;
-      margin-bottom: 0;
-      position: absolute;
-      border-bottom: none;
     }
   }
 }
@@ -133,8 +123,16 @@ h2.font-22 {
   font-size: 35px;
 }
 
-.app-list-exams {
-  .list-group {
+.app-list-exams, .app-list-users {
+  .exams-list, .users-list {
     margin-top: 25px;
+
+    .exam, .user {
+      .exam-actions, .user-actions {
+        button {
+          margin-left: 5px;
+        }
+      }
+    }
   }
 }
