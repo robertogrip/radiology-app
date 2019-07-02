@@ -126,13 +126,9 @@ h2.font-22 {
 .app-list-exams, .app-list-users {
   .exams-list, .users-list {
     margin-top: 25px;
-
-    .exam, .user {
-      .exam-actions, .user-actions {
-        button {
-          margin-left: 5px;
-        }
-      }
-    }
   }
+}
+
+.btn + .btn {
+  margin-left: 5px;
 }
