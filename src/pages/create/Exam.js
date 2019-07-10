@@ -25,7 +25,8 @@ class Exam extends React.Component {
 
   createItem(event) {
     event.preventDefault();
-    const { history } = this.props;
+    const { props } = this;
+    const { history, exams, updateState } = props;
     const { name, description, examFile, userOptions, user } = this.state;
 
     Api.exams.create({
@@ -37,10 +38,13 @@ class Exam extends React.Component {
       if (response.success) {
         Confirm.fire({
           title: 'Sucesso!',
-          text: 'Novo exame criado',
+          text: 'Novo exame foi criado',
           type: 'success',
           confirmButtonText: 'Ok'
         }).then(() => {
+          const newExams = exams;
+          newExams.push(response.data);
+          updateState({exams: newExams});
           return history.push('/dashboard');
         });
       } else {
@@ -49,8 +53,6 @@ class Exam extends React.Component {
           text: 'Novo exame não foi criado, tente novamente',
           type: 'error',
           confirmButtonText: 'Ok'
-        }).then(() => {
-          return this.setState({userOptions: 'create-user'});
         });
       }
     });

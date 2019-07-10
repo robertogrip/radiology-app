@@ -2,60 +2,17 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../../../node_modules/bootstrap/dist/css/bootstrap.css';
 import { Header } from '../../components';
-import Api from '../../utils/api';
+
+//import Api
+import { Api, Confirm } from '../../utils';
 
 class Exam extends React.Component {
   constructor(props) {
     super(props);
-    const { match, exams } = props;
-    if (match.params && match.params.id && exams && exams.length) {
-      const examId = match.params.id;
-      const examFind = exams.filter(exam => exam.id === examId)[0];
-
-      if (examFind) {
-        this.state = {
-          name: examFind.name,
-          user: examFind.user,
-          content: examFind.content,
-          description: examFind.description,
-          userOptions: 'select-user'
-        };
-      }
-    } else if (
-      match.params &&
-      match.params.id &&
-      props.user &&
-      props.user.id &&
-      props.user.level &&
-      !props.exams
-    ) {
-      Api.exams.getAll({ user: props.user.id, level: props.user.level }).then(result => {
-        props.updateState({
-          exams: (result && result.success && result.data) || null
-        });
-      });
-    }
-
+    const { exams, match } = props;
+    this.state = exams.filter(exams => exams.id === match.params.id)[0];
+    this.editItem = this.editItem.bind(this);
     this.handleChange = this.handleChange.bind(this);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { match, exams } = nextProps;
-
-    if (match.params && match.params.id && exams && exams.length) {
-      const examId = match.params.id;
-      const examFind = exams.filter(exam => exam.id === examId)[0];
-
-      if (examFind) {
-        this.setState({
-          name: examFind.name,
-          user: examFind.user,
-          content: examFind.content,
-          description: examFind.description,
-          userOptions: 'select-user'
-        });
-      }
-    }
   }
 
   handleChange(event) {
@@ -65,34 +22,58 @@ class Exam extends React.Component {
     this.setState(newState);
   }
 
+  editItem(event) {
+    event.preventDefault();
+    const { props } = this;
+    const { history, exams, updateState } = props;
+    const { id, name, description, content, examFile, userOptions, user } = this.state;
+
+    Api.exams.update(id, {
+      name,
+      description,
+      content: content || (examFile && 'teste teste teste teste teste teste teste teste teste teste teste teste teste') || '',
+      user: userOptions !== 'create-user' && user ? user : null 
+    }).then(response => {
+      if (response.success) {
+        Confirm.fire({
+          title: 'Sucesso!',
+          text: 'Novo exame foi criado',
+          type: 'success',
+          confirmButtonText: 'Ok'
+        }).then(() => {
+          const newExams = exams.filter(exam => exam.id !== id);
+          newExams.push({ ...response.data, id });
+          updateState({exams: newExams});
+          return history.push('/dashboard');
+        });
+      } else {
+        Confirm.fire({
+          title: 'Erro!',
+          text: 'Novo exame não foi criado, tente novamente',
+          type: 'error',
+          confirmButtonText: 'Ok'
+        });
+      }
+    });
+  }
+
   render() {
-    const { state, props } = this;
-
-    if (!state)
-      return (
-        <div className="app-edit-exam">
-          <Header {...props} />
-          <div className="container container-fluid fixed-navbar">
-            <h2 className="display-4 font-22">Lista de exames</h2>
-          </div>
-        </div>
-      );
-
+    const { state } = this;
     return (
       <div className="app-edit-exam">
-        <Header {...props} />
+        <Header {...this.props} />
         <div className="container container-fluid fixed-navbar">
-          <h2 className="display-4 font-22">Editar - {this.state.name}</h2>
-          <form>
+          <h2 className="display-4 font-22">Editar exame {state.name}</h2>
+          <form onSubmit={this.editItem}>
             <div className="form-group">
               <label htmlFor="name">Nome</label>
               <input
-                type="email"
+                type="text"
                 className="form-control"
                 id="name"
                 placeholder="Nome"
-                value={this.state.name}
                 onChange={this.handleChange}
+                value={state.name}
               />
             </div>
             <div className="form-group">
@@ -102,8 +83,8 @@ class Exam extends React.Component {
                 className="form-control"
                 id="description"
                 placeholder="Descrição"
-                value={this.state.description}
                 onChange={this.handleChange}
+                value={state.description}
               />
             </div>
             <div className="form-group">
@@ -147,7 +128,7 @@ class Exam extends React.Component {
               </div>
             </div>
             <button type="submit" className="btn btn-primary">
-              Cadastrar
+              Editar
             </button>
             <Link to="/dashboard" className="btn btn-outline-secondary">
               Voltar

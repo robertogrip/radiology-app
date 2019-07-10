@@ -47,7 +47,7 @@ class ListUsers extends React.Component {
         return props.users.map((user, index) => {
             return (
                 <li key={index} className="list-group-item d-flex justify-content-between align-items-center user">
-                    <div className="user-name">{user.login}</div>
+                    <div className="user-name">{user.login} {user.level === '2' ? <span className="badge badge-primary">administrador</span> : ''}</div>
                     <div className="user-actions">
                         <Link to={`/user/edit/${user.id}`} className="btn btn-outline-secondary btn-inline">Editar</Link>
                         <button type="button" className="btn btn-outline-danger" onClick={this.deleteItem} data-id={user.id}>Excluir</button>

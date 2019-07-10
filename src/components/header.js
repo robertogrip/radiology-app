@@ -29,7 +29,7 @@ class Header extends React.Component {
                 </Link>
                 <ul className="navbar-list">
                   <li>
-                    <Link to="/dashboard">Dashboard</Link>
+                    <Link to="/dashboard">Exames</Link>
                   </li>
                   <li>
                     <Link to="/users">Usuários</Link>
