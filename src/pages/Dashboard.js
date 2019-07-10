@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../../node_modules/bootstrap/dist/css/bootstrap.css';
 import { Header, ListExams }  from '../components';
-import Api from '../utils/api';
+import { Api } from '../utils';
 
 class Dashboard extends React.Component {
   componentDidMount() {
@@ -37,7 +37,7 @@ class Dashboard extends React.Component {
                   </div>
                 </div>
                 <ul className="list-group exams-list">
-                  <ListExams exams={props && props.exams} />
+                  <ListExams { ...props } />
                 </ul>
               </div>
             </div>

@@ -37,7 +37,7 @@ class Users extends React.Component {
                     </div>
                 </div>
                 <ul className="list-group users-list">
-                  <ListUsers users={props && props.users} />
+                  <ListUsers {...props} />
                 </ul>
               </div>
             </div>

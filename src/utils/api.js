@@ -15,7 +15,7 @@ const auth = (data) => {
 
 function restApi(Class) {
   const create = (data) => {
-    return fetch(`${baseUrl}/${Class}/create`, {
+    return fetch(`${baseUrl}/${Class}`, {
       body: JSON.stringify(data),
       headers,
       method: 'POST'

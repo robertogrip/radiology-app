@@ -3,17 +3,16 @@ import { Link } from 'react-router-dom';
 import '../../../node_modules/bootstrap/dist/css/bootstrap.css';
 import { Header } from '../../components';
 
-class Exam extends React.Component {
-  constructor(props) {
-    super(props);
-    const { match } = props;
-    if (match.params && match.params.id) {
-      console.log(match.params.id);
-    }
+//import Api
+import { Api, Confirm } from '../../utils';
 
+class Exam extends React.Component {
+  constructor() {
+    super();
     this.state = {
       userOptions: 'create-user'
     };
+    this.createItem = this.createItem.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -24,17 +23,50 @@ class Exam extends React.Component {
     this.setState(newState);
   }
 
+  createItem(event) {
+    event.preventDefault();
+    const { history } = this.props;
+    const { name, description, examFile, userOptions, user } = this.state;
+
+    Api.exams.create({
+      name,
+      description, 
+      content: (examFile && 'teste teste teste teste teste teste teste teste teste teste teste teste teste') || '',
+      user: userOptions !== 'create-user' && user ? user : null 
+    }).then(response => {
+      if (response.success) {
+        Confirm.fire({
+          title: 'Sucesso!',
+          text: 'Novo exame criado',
+          type: 'success',
+          confirmButtonText: 'Ok'
+        }).then(() => {
+          return history.push('/dashboard');
+        });
+      } else {
+        Confirm.fire({
+          title: 'Erro!',
+          text: 'Novo exame não foi criado, tente novamente',
+          type: 'error',
+          confirmButtonText: 'Ok'
+        }).then(() => {
+          return this.setState({userOptions: 'create-user'});
+        });
+      }
+    });
+  }
+
   render() {
     return (
       <div className="app-create-exam">
         <Header {...this.props} />
         <div className="container container-fluid fixed-navbar">
           <h2 className="display-4 font-22">Cadastrar exame</h2>
-          <form>
+          <form onSubmit={this.createItem}>
             <div className="form-group">
               <label htmlFor="name">Nome</label>
               <input
-                type="email"
+                type="text"
                 className="form-control"
                 id="name"
                 placeholder="Nome"
