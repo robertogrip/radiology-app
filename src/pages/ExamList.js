@@ -1,8 +1,8 @@
 import React from 'react';
 import '../../node_modules/bootstrap/dist/css/bootstrap.css';
-import { Header } from '../components';
+import { HeaderNormal } from '../components';
 
-class Home extends React.Component {
+class ExamList extends React.Component {
   constructor(props) {
     super(props);
     const { match } = props;
@@ -13,11 +13,11 @@ class Home extends React.Component {
 
   render() {
     return (
-      <div className="app-home">
-        <Header {...this.props} />
+      <div className="app-exam-list">
+        <HeaderNormal {...this.props} />
       </div>
     );
   }
 }
 
-export default Home;
+export default ExamList;

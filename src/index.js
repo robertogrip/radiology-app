@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import {
-  Home,
+  ExamList,
   Login,
   Users,
   NotFound,
@@ -125,8 +125,8 @@ class App extends React.Component {
       <BrowserRouter>
         <Switch>
           <PropsRoute path="/" exact={true} component={Login} {...this.state} />
-          <PrivateRoute path="/exam/list" exact={true} component={Default} {...this.state} />
-          <PrivateRoute path="/exam/view/:id" exact={true} component={Home} {...this.state} />
+          <PrivateRoute path="/exam/list" exact={true} component={ExamList} {...this.state} />
+          <PrivateRoute path="/exam/view/:id" exact={true} component={Default} {...this.state} />
           <AdminPrivateRoute path="/dashboard" exact={true} component={Dashboard} {...this.state} />
           <AdminPrivateRoute
             path="/exam/create"

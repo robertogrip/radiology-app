@@ -20,8 +20,13 @@ class Login extends React.Component {
     Api.auth({login: state.examNumber, password: state.password})
     .then(result => {
       if (result && result.success && result.data ) {
-        props.updateUser(result.data);
-        history.push('/dashboard');
+        const userData = result.data;
+        props.updateUser(userData);
+        if (userData.level === '2') {
+          history.push('/dashboard');
+        } else if (userData.exam && !Array.isArray(userData.exam)) {
+          history.push(`/exam/view/${userData.exam}`);
+        }
       }
     });
   }

@@ -22,7 +22,7 @@ class Users extends React.Component {
     const { props } = this;
 
     return (
-      <div className="app-home">
+      <div className="app-users">
         <Header {...props} />
         <div className="container container-fluid fixed-navbar">
           <div className="app-list-users">

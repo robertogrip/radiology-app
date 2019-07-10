@@ -1,4 +1,4 @@
-import Home from './Home';
+import ExamList from './ExamList';
 import Login from './Login';
 import Users from './Users';
 import Default from './Default';
@@ -8,7 +8,7 @@ import { CreateExam, CreateUser } from './create';
 import { EditExam, EditUser } from './edit';
 
 export {
-  Home,
+  ExamList,
   Login,
   Users,
   NotFound,
