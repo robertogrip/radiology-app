@@ -120,11 +120,22 @@ code {
     width: 400px;
     padding: 50px;
     margin: 25px 0;
+    background: #fff;
+    position: relative;
     display: inline-block;
     box-shadow: $box-shadow;
-    background: #fff;
     border-top-right-radius: $borderRadius;
     border-bottom-right-radius: $borderRadius;
+  }
+  .btn-admin-panel {
+    right: 0;
+    bottom: 0;
+    font-size: 11px;
+    box-shadow: none;
+    position: absolute;
+    &.active {
+      box-shadow: inset 1px 1px 2px rgba(0,0,0,.2);
+    }
   }
 }
 
