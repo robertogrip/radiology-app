@@ -118,7 +118,7 @@ class User extends React.Component {
               </div>
             </div>
             <button type="submit" className="btn btn-primary">
-              Editar
+              Salvar
             </button>
             <Link to="/users" className="btn btn-outline-secondary">
               Voltar

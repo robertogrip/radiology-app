@@ -145,3 +145,19 @@ h2.font-22 {
 .btn + .btn {
   margin-left: 5px;
 }
+
+.fr-wrapper {
+  border-bottom-color: transparent !important;
+
+  p {
+    margin: 0;
+  }
+
+  & + .second-toolbar {
+    min-height: 10px;
+
+    #logo {
+      display: none;
+    }
+  }
+}

@@ -16,6 +16,9 @@ import {
 import * as serviceWorker from './serviceWorker';
 import './index.scss';
 
+//import Api
+import { Api } from './utils';
+
 const cacheUser = () => {
   const user = localStorage.getItem('user') && JSON.parse(localStorage.getItem('user'));
   return user && user.timestamp + 3600000 >= new Date().getTime() ? user : false;
@@ -99,8 +102,9 @@ const AdminPrivateRoute = ({ component, redirectTo, ...rest }) => {
 class App extends React.Component {
   constructor() {
     super();
+    const user = userValidate;
     this.state = {
-      user: userValidate,
+      user,
       updateUser: user => {
         if (user) {
           user.timestamp = new Date().getTime();
@@ -118,9 +122,50 @@ class App extends React.Component {
         }
       }
     };
+
+    if (user) {
+      Api.exams.getAll({ user: user.id, level: user.level })
+        .then(result => {
+          const resultExams = (result && result.success && result.data) || null;
+          this.setState({
+            exams: resultExams
+          });
+        });
+
+      Api.users.getAll({ user: user.id, level: user.level })
+        .then(result => {
+          this.setState({
+            users: (result && result.success && result.data) || null
+          });
+        });
+    }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextState.user && nextState.user.id) {
+      if (!nextState.exams)
+        Api.exams.getAll({ user: nextState.user.id, level: nextState.user.level })
+          .then(result => {
+            const resultExams = (result && result.success && result.data) || null;
+            this.setState({
+              exams: resultExams
+            });
+          });
+
+      if (!nextState.users)
+        Api.users.getAll({ user: nextState.user.id, level: nextState.user.level })
+          .then(result => {
+            this.setState({
+              users: (result && result.success && result.data) || null
+            });
+          });
+    }
+
+    return JSON.stringify(this.props) !== JSON.stringify(nextProps) || JSON.stringify(this.state) !== JSON.stringify(nextState);
   }
 
   render() {
+    if (!this.state || (this.state.user.id && (!this.state.users || !this.state.exams))) return null;
     return (
       <BrowserRouter>
         <Switch>

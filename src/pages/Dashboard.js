@@ -2,22 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../../node_modules/bootstrap/dist/css/bootstrap.css';
 import { Header, ListExams }  from '../components';
-import { Api } from '../utils';
 
 class Dashboard extends React.Component {
-  componentDidMount() {
-    const { props } = this;
-
-    if (props.user && props.user.id && props.user.level && !props.exams) {
-      Api.exams.getAll({ user: props.user.id, level: props.user.level })
-        .then(result => {
-          props.updateState({
-            exams: (result && result.success && result.data) || null
-          });
-        });
-    }
-  }
-
   render() {
     const { props } = this;
   

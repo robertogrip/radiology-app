@@ -1,5 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import FroalaEditorComponent from 'react-froala-wysiwyg';
+
+// Require Editor CSS files.
+import 'froala-editor/css/froala_style.min.css';
+import 'froala-editor/css/froala_editor.pkgd.min.css';
+
 import '../../../node_modules/bootstrap/dist/css/bootstrap.css';
 import { Header } from '../../components';
 
@@ -7,13 +13,15 @@ import { Header } from '../../components';
 import { Api, Confirm } from '../../utils';
 
 class Exam extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      userOptions: 'create-user'
+      userOptions: 'create-user',
+
     };
     this.createItem = this.createItem.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleModelChange = this.handleModelChange.bind(this);
   }
 
   handleChange(event) {
@@ -27,12 +35,12 @@ class Exam extends React.Component {
     event.preventDefault();
     const { props } = this;
     const { history, exams, updateState } = props;
-    const { name, description, examFile, userOptions, user } = this.state;
+    const { name, description, userOptions, user, content } = this.state;
 
     Api.exams.create({
       name,
+      content,
       description, 
-      content: (examFile && 'teste teste teste teste teste teste teste teste teste teste teste teste teste') || '',
       user: userOptions !== 'create-user' && user ? user : null 
     }).then(response => {
       if (response.success) {
@@ -58,6 +66,15 @@ class Exam extends React.Component {
     });
   }
 
+  handleModelChange(content) {
+    this.setState({ content });
+  }
+
+  editorConfig = {
+    charCounterCount: true,
+    placeholderText: 'Digite o conteúdo do exame'
+  }
+
   render() {
     return (
       <div className="app-create-exam">
@@ -71,6 +88,7 @@ class Exam extends React.Component {
                 type="text"
                 className="form-control"
                 id="name"
+                required
                 placeholder="Nome"
                 onChange={this.handleChange}
               />
@@ -79,6 +97,7 @@ class Exam extends React.Component {
               <label htmlFor="description">Descrição</label>
               <input
                 type="text"
+                required
                 className="form-control"
                 id="description"
                 placeholder="Descrição"
@@ -93,6 +112,16 @@ class Exam extends React.Component {
                 id="examFile"
                 accept="application/pdf"
                 onChange={this.handleChange}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="text-editor">Editor de conteúdo</label>
+              <FroalaEditorComponent
+                id="text-editor"
+                tag='textarea' 
+                config={this.editorConfig}
+                model={this.state.content}
+                onModelChange={this.handleModelChange}
               />
             </div>
             <div className="form-group">
@@ -125,6 +154,21 @@ class Exam extends React.Component {
                 </label>
               </div>
             </div>
+            { this.state.userOptions !== 'create-user' &&
+              <div className="row">
+                <div className="form-group col-4">
+                  <label htmlFor="user-select">Selecionar usuário</label>
+                  <select className="form-control" onChange={this.handleChange} value={this.state.user} id="user">
+                    <option value="">Selecionar usuário</option>
+                    {(
+                      this.props && this.props.users && this.props.users.map(user => {
+                        return <option key={user.id} value={user.id}>{user.login}</option>
+                      })
+                    )}
+                  </select>
+                </div>
+              </div>  
+            }
             <button type="submit" className="btn btn-primary">
               Cadastrar
             </button>

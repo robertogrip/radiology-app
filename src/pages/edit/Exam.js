@@ -1,5 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import FroalaEditorComponent from 'react-froala-wysiwyg';
+
+// Require Editor CSS files.
+import 'froala-editor/css/froala_style.min.css';
+import 'froala-editor/css/froala_editor.pkgd.min.css';
+
+import '../../../node_modules/bootstrap/dist/css/bootstrap.css';
 import '../../../node_modules/bootstrap/dist/css/bootstrap.css';
 import { Header } from '../../components';
 
@@ -13,6 +20,7 @@ class Exam extends React.Component {
     this.state = exams.filter(exams => exams.id === match.params.id)[0];
     this.editItem = this.editItem.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleModelChange = this.handleModelChange.bind(this);
   }
 
   handleChange(event) {
@@ -26,12 +34,12 @@ class Exam extends React.Component {
     event.preventDefault();
     const { props } = this;
     const { history, exams, updateState } = props;
-    const { id, name, description, content, examFile, userOptions, user } = this.state;
+    const { id, name, description, content, userOptions, user } = this.state;
 
     Api.exams.update(id, {
       name,
+      content,
       description,
-      content: content || (examFile && 'teste teste teste teste teste teste teste teste teste teste teste teste teste') || '',
       user: userOptions !== 'create-user' && user ? user : null 
     }).then(response => {
       if (response.success) {
@@ -55,6 +63,15 @@ class Exam extends React.Component {
         });
       }
     });
+  }
+
+  handleModelChange(content) {
+    this.setState({ content });
+  }
+
+  editorConfig = {
+    charCounterCount: true,
+    placeholderText: 'Digite o conteúdo do exame'
   }
 
   render() {
@@ -98,6 +115,16 @@ class Exam extends React.Component {
               />
             </div>
             <div className="form-group">
+              <label htmlFor="text-editor">Editor de conteúdo</label>
+              <FroalaEditorComponent
+                id="text-editor"
+                tag='textarea' 
+                config={this.editorConfig}
+                model={this.state.content}
+                onModelChange={this.handleModelChange}
+              />
+            </div>
+            <div className="form-group">
               <div className="form-check form-check-inline">
                 <input
                   className="form-check-input"
@@ -127,8 +154,23 @@ class Exam extends React.Component {
                 </label>
               </div>
             </div>
+            { this.state.userOptions !== 'create-user' &&
+              <div className="row">
+                <div className="form-group col-4">
+                  <label htmlFor="user-select">Selecionar usuário</label>
+                  <select className="form-control" onChange={this.handleChange} value={this.state.user} id="user">
+                    <option value="">Selecionar usuário</option>
+                    {(
+                      this.props && this.props.users && this.props.users.map(user => {
+                        return <option key={user.id} value={user.id}>{user.login}</option>
+                      })
+                    )}
+                  </select>
+                </div>
+              </div>  
+            }
             <button type="submit" className="btn btn-primary">
-              Editar
+              Salvar
             </button>
             <Link to="/dashboard" className="btn btn-outline-secondary">
               Voltar
