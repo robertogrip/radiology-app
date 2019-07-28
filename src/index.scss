@@ -15,6 +15,12 @@ code {
     monospace;
 }
 
+#root {
+  > div {
+    padding-bottom: 25px;
+  }
+}
+
 .navbar {
   box-shadow:  $box-shadow;
 

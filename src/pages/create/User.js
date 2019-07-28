@@ -65,53 +65,54 @@ class User extends React.Component {
           <h2 className="display-4 font-22">Cadastrar usuário</h2>
           <form onSubmit={this.createItem}>
             <div className="form-group">
-              <label htmlFor="login">Número exame/Login</label>
+              <label htmlFor="login">Número exame ou Login</label>
               <input
                 type="text"
                 className="form-control"
                 id="login"
-                placeholder="Número exame/Login"
                 onChange={this.handleChange}
               />
             </div>
             <div className="form-group">
-              <label htmlFor="description">Senha/Password</label>
+              <label htmlFor="description">Senha</label>
               <input
                 type="password"
                 className="form-control"
                 id="password"
-                placeholder="Senha/Password"
                 onChange={this.handleChange}
               />
             </div>
             <div className="form-group">
-              <div className="form-check form-check-inline">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="level"
-                  id="user-options-1"
-                  value="1"
-                  checked={this.state.level === '1'}
-                  onChange={this.handleChange}
-                />
-                <label className="form-check-label" htmlFor="user-options-1">
-                  Usuário normal
-                </label>
-              </div>
-              <div className="form-check form-check-inline">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="level"
-                  id="user-options-2"
-                  value="2"
-                  checked={this.state.level !== '1'}
-                  onChange={this.handleChange}
-                />
-                <label className="form-check-label" htmlFor="user-options-2">
-                  Administrador
-                </label>
+              <label htmlFor="description">Tipo do acesso</label>
+              <div className="form-group">
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="level"
+                    id="user-options-1"
+                    value="1"
+                    checked={this.state.level === '1'}
+                    onChange={this.handleChange}
+                  />
+                  <label className="form-check-label" htmlFor="user-options-1">
+                    Usuário normal
+                  </label>
+                </div>
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="level"
+                    id="user-options-2"
+                    value="2"
+                    checked={this.state.level !== '1'}
+                    onChange={this.handleChange}
+                  />
+                  <label className="form-check-label" htmlFor="user-options-2">
+                    Administrador
+                  </label>
+                </div>
               </div>
             </div>
             <button type="submit" className="btn btn-primary">

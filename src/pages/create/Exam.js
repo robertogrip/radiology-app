@@ -21,6 +21,7 @@ class Exam extends React.Component {
     };
     this.createItem = this.createItem.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleUploadPdf = this.handleUploadPdf.bind(this);
     this.handleModelChange = this.handleModelChange.bind(this);
   }
 
@@ -70,6 +71,43 @@ class Exam extends React.Component {
     this.setState({ content });
   }
 
+  handleUploadPdf(event) {
+    const self = this;
+    const file = event.target.files[0];
+  
+    if(!file || file.type !== "application/pdf"){
+      if (file) console.error(file.name, "não é um arquivo pdf.");
+      return;
+    }
+
+    const b64ToUtf8 = str => {
+      str = str.replace(/\s/g, '');    
+      return decodeURIComponent(escape(window.atob( str )));
+    }
+    
+    const fileReader = new FileReader();  
+    fileReader.onload = function() {
+      const formData = new FormData();
+      formData.append('File', file, 'passaporte_bay.pdf');
+
+      fetch('//localhost/convertPdf', {
+        body: formData,
+        method: 'POST'
+      })
+        .then(response => response.json())
+        .then(result => {
+          debugger;
+          if (result && result.FileData) {
+            self.setState({
+              content: result.FileData
+            });
+          }
+        });
+    };
+
+    fileReader.readAsDataURL(file);
+  }
+
   editorConfig = {
     charCounterCount: true,
     placeholderText: 'Digite o conteúdo do exame'
@@ -89,7 +127,6 @@ class Exam extends React.Component {
                 className="form-control"
                 id="name"
                 required
-                placeholder="Nome"
                 onChange={this.handleChange}
               />
             </div>
@@ -100,7 +137,6 @@ class Exam extends React.Component {
                 required
                 className="form-control"
                 id="description"
-                placeholder="Descrição"
                 onChange={this.handleChange}
               />
             </div>
@@ -111,7 +147,7 @@ class Exam extends React.Component {
                 className="form-control-file"
                 id="examFile"
                 accept="application/pdf"
-                onChange={this.handleChange}
+                onChange={this.handleUploadPdf}
               />
             </div>
             <div className="form-group">
@@ -125,33 +161,36 @@ class Exam extends React.Component {
               />
             </div>
             <div className="form-group">
-              <div className="form-check form-check-inline">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="userOptions"
-                  id="user-options-1"
-                  value="create-user"
-                  checked={this.state.userOptions === 'create-user'}
-                  onChange={this.handleChange}
-                />
-                <label className="form-check-label" htmlFor="user-options-1">
-                  Criar novo usuário
-                </label>
-              </div>
-              <div className="form-check form-check-inline">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="userOptions"
-                  id="user-options-2"
-                  value="select-user"
-                  checked={this.state.userOptions !== 'create-user'}
-                  onChange={this.handleChange}
-                />
-                <label className="form-check-label" htmlFor="user-options-2">
-                  Selecionar usuário existente
-                </label>
+              <label htmlFor="text-editor">Quem vai ver este exame</label>
+              <div className="form-group">
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="userOptions"
+                    id="user-options-1"
+                    value="create-user"
+                    checked={this.state.userOptions === 'create-user'}
+                    onChange={this.handleChange}
+                  />
+                  <label className="form-check-label" htmlFor="user-options-1">
+                    Criar novo usuário
+                  </label>
+                </div>
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="userOptions"
+                    id="user-options-2"
+                    value="select-user"
+                    checked={this.state.userOptions !== 'create-user'}
+                    onChange={this.handleChange}
+                  />
+                  <label className="form-check-label" htmlFor="user-options-2">
+                    Selecionar usuário existente
+                  </label>
+                </div>
               </div>
             </div>
             { this.state.userOptions !== 'create-user' &&
