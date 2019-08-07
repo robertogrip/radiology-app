@@ -14,7 +14,7 @@ class ListExamsView extends React.Component {
                 <li key={index} className="list-group-item d-flex justify-content-between align-items-center exam">
                     <div className="exam-name">{exam.name}</div>
                     <div className="exam-actions">
-                        <Link to={`/exam/view/${exam.id}`} className="btn btn-outline-primary btn-inline">Visualizar</Link>
+                        <Link to={`/exam/view/${exam.id}`} className="btn btn-primary btn-inline">Visualizar</Link>
                     </div>
                 </li>
             )
