@@ -53,8 +53,9 @@ class Login extends React.Component {
     return (
       <div className="app-login">
         <div className="modal-login">
-          <div className="brand-form" />
+          {/* <div className="brand-form" /> */}
           <form onSubmit={this.checkLogin}>
+            <div className="brand" />
             <div className="form-group">
               <label htmlFor="examNumber">
                 {state.controlPanel ? 'Usuário' : 'Número do exame'}

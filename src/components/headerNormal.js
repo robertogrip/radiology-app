@@ -22,17 +22,18 @@ class Header extends React.Component {
       return (
           <header className="app-header">
             <nav className="navbar navbar-light bg-light">
-              <div className="navbar-list">
-                <Link className="navbar-brand" to="/dashboard">
-                  <img src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30" className="d-inline-block align-top" alt="" />
-                  Radiology
-                </Link>
+              <div className="container">
+                <div className="navbar-list">
+                  <Link className="navbar-brand" to="/dashboard">
+                    <img src="http://maxilare.nuovo.com.br/wp-content/uploads/2019/08/marca_maxilare-maior.png" width="200" height="67" className="d-inline-block align-top" alt="" />
+                  </Link>
+                </div>
+                <ul className="navbar-list navbar-bottom-links">
+                  <li>
+                    <a href="/" onClick={this.logout}>Sair</a>
+                  </li>
+                </ul>
               </div>
-              <ul className="navbar-list navbar-bottom-links">
-                <li>
-                  <a href="/" onClick={this.logout}>Sair</a>
-                </li>
-              </ul>
             </nav>
           </header>
       )

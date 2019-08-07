@@ -1,11 +1,9 @@
-$borderRadius: 3px;
+$borderRadius: 2px;
 $box-shadow: 3px 3px 15px rgba(0,0,0,.2);
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: 'Quicksand', 'Open Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -16,15 +14,22 @@ code {
 }
 
 #root {
-  > div {
+  > div:not(.app-login) {
     padding-bottom: 25px;
   }
 }
 
+.app-login {
+  background: url('/images/login-background.jpg') no-repeat center / cover;
+}
+
 .navbar {
+  padding: 0 1rem;
   box-shadow:  $box-shadow;
 
   .navbar-brand {
+    padding: 0;
+
     img {
       margin-right: 10px;
     }
@@ -89,7 +94,7 @@ code {
     }
 
     .navbar-brand {
-      margin-bottom: 25px;
+      margin: 15px -15px 15px;
     }
   }
 }
@@ -101,6 +106,10 @@ code {
     padding-left: 280px;
     padding-right: 30px;
   }
+
+  &.fixed-normal-navbar {
+    margin-top: 25px;
+  }
 }
 
 .modal-login {
@@ -110,15 +119,22 @@ code {
   overflow: auto;
   align-items: center;
   justify-content: center;
-  background: #5d9eca;
-  background: linear-gradient(135deg,#5d9eca,#2d4b67);
+  background: rgba(0,0,0,.5);
+
+  .brand {
+    width: 200px;
+    height: 67px;
+    display: block;
+    margin: -15px -15px 25px;
+    background: url(/images/brand.png) no-repeat center/cover;
+  }
 
   .brand-form {
     width: 400px;
     height: 310px;
     display: inline-block;
     box-shadow: $box-shadow;
-    background: url('/brand.jpg');
+    background: url('/images/brand.jpg');
     border-top-left-radius: $borderRadius;
     border-bottom-left-radius: $borderRadius;
   }
@@ -130,8 +146,7 @@ code {
     position: relative;
     display: inline-block;
     box-shadow: $box-shadow;
-    border-top-right-radius: $borderRadius;
-    border-bottom-right-radius: $borderRadius;
+    border-radius: $borderRadius;
   }
   .btn-admin-panel {
     right: 0;
@@ -176,5 +191,53 @@ h2.font-22 {
     #logo {
       display: none;
     }
+  }
+}
+
+.display-4 {
+  small {
+    opacity: .65;
+    display: block;
+    margin-top: 15px;
+    font-weight: 300;
+    margin-bottom: 35px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+}
+
+.btn {
+  border-radius: $borderRadius;
+
+  &.btn-primary {
+    color: #7b6a58;
+    border-width: $borderRadius;
+    background: #ffffff;
+    border-color: #7b6a58;
+
+    &:hover, &:active, &:focus {
+      color: #7b6a58 !important;
+      background: #ffffff !important;
+      border-color: #7b6a58 !important;
+
+      &:active, &:focus {
+        box-shadow: 0 0 0 0.2rem rgba(123, 106, 88, .15) !important;
+      }
+    }
+  }
+}
+
+.form-control {
+  border-radius: $borderRadius;
+
+  &:focus, &:active {
+    border-color: #7b6a58 !important;
+    box-shadow: 0 0 0 0.2rem rgba(123, 106, 88, .15) !important;
+  }
+}
+
+.swal2-styled {
+  &.swal2-confirm {
+    background-color: #7b6a58;
   }
 }

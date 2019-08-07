@@ -24,8 +24,7 @@ class Header extends React.Component {
             <nav className="navbar navbar-vertical navbar-light bg-light">
               <div className="navbar-list">
                 <Link className="navbar-brand" to="/dashboard">
-                  <img src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30" className="d-inline-block align-top" alt="" />
-                  Radiology
+                  <img src="http://maxilare.nuovo.com.br/wp-content/uploads/2019/08/marca_maxilare-maior.png" width="200" height="67" className="d-inline-block align-top" alt="" />
                 </Link>
                 <ul className="navbar-list">
                   <li>

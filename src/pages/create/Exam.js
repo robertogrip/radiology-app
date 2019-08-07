@@ -79,11 +79,6 @@ class Exam extends React.Component {
       if (file) console.error(file.name, "não é um arquivo pdf.");
       return;
     }
-
-    const b64ToUtf8 = str => {
-      str = str.replace(/\s/g, '');    
-      return decodeURIComponent(escape(window.atob( str )));
-    }
     
     const fileReader = new FileReader();  
     fileReader.onload = function() {
@@ -96,8 +91,14 @@ class Exam extends React.Component {
       })
         .then(response => response.json())
         .then(result => {
-          debugger;
           if (result && result.FileData) {
+            Confirm.fire({
+              title: 'Sucesso!',
+              text: 'O seu arquivo PDF foi convertido em texto',
+              type: 'success',
+              confirmButtonText: 'Ok'
+            });
+
             self.setState({
               content: result.FileData
             });

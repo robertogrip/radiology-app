@@ -6,7 +6,7 @@ import {
   Login,
   Users,
   NotFound,
-  Default,
+  ExamView,
   Dashboard,
   CreateExam,
   CreateUser,
@@ -142,7 +142,7 @@ class App extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (nextState.user && nextState.user.id) {
+    if (nextState.user && nextState.user.id && nextState.user.level === "2") {
       if (!nextState.exams)
         Api.exams.getAll({ user: nextState.user.id, level: nextState.user.level })
           .then(result => {
@@ -165,13 +165,13 @@ class App extends React.Component {
   }
 
   render() {
-    if (!this.state || (this.state.user.id && (!this.state.users || !this.state.exams))) return null;
+    if (!this.state || (this.state.user && this.state.user.level === '2' && (!this.state.users || !this.state.exams))) return null;
     return (
       <BrowserRouter>
         <Switch>
           <PropsRoute path="/" exact={true} component={Login} {...this.state} />
           <PrivateRoute path="/exam/list" exact={true} component={ExamList} {...this.state} />
-          <PrivateRoute path="/exam/view/:id" exact={true} component={Default} {...this.state} />
+          <PrivateRoute path="/exam/view/:id" exact={true} component={ExamView} {...this.state} />
           <AdminPrivateRoute path="/dashboard" exact={true} component={Dashboard} {...this.state} />
           <AdminPrivateRoute
             path="/exam/create"

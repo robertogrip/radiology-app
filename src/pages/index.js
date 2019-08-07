@@ -1,7 +1,7 @@
 import ExamList from './ExamList';
 import Login from './Login';
 import Users from './Users';
-import Default from './Default';
+import ExamView from './ExamView';
 import NotFound from './404';
 import Dashboard from './Dashboard';
 import { CreateExam, CreateUser } from './create';
@@ -12,7 +12,7 @@ export {
   Login,
   Users,
   NotFound,
-  Default,
+  ExamView,
   Dashboard,
   CreateExam,
   EditExam,
