@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import FroalaEditorComponent from 'react-froala-wysiwyg';
-
-// Require Editor CSS files.
-import 'froala-editor/css/froala_style.min.css';
-import 'froala-editor/css/froala_editor.pkgd.min.css';
+import { convertToRaw, EditorState, ContentState } from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
+import htmlToDraft from 'html-to-draftjs';
+import { Editor } from 'react-draft-wysiwyg';
+import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 import '../../../node_modules/bootstrap/dist/css/bootstrap.css';
 import '../../../node_modules/bootstrap/dist/css/bootstrap.css';
@@ -20,6 +20,7 @@ class Exam extends React.Component {
     this.state = exams.filter(exams => exams.id === match.params.id)[0];
     this.editItem = this.editItem.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleUploadPdf = this.handleUploadPdf.bind(this);
     this.handleModelChange = this.handleModelChange.bind(this);
   }
 
@@ -35,6 +36,7 @@ class Exam extends React.Component {
     const { props } = this;
     const { history, exams, updateState } = props;
     const { id, name, description, content, userOptions, user } = this.state;
+    this.setState({loading: true});
 
     Api.exams.update(id, {
       name,
@@ -62,20 +64,98 @@ class Exam extends React.Component {
           confirmButtonText: 'Ok'
         });
       }
+      this.setState({loading: true});
     });
   }
 
   handleModelChange(content) {
-    this.setState({ content });
+    this.setState({
+      content: draftToHtml(convertToRaw(content.getCurrentContent()))
+    });
   }
 
-  editorConfig = {
-    charCounterCount: true,
-    placeholderText: 'Digite o conteúdo do exame'
+  handleUploadPdf(event) {
+    const self = this;
+    const file = event.target.files[0];
+  
+    if(!file || file.type !== "application/pdf"){
+      if (file) console.error(file.name, "não é um arquivo pdf.");
+      return;
+    }
+    
+    const fileReader = new FileReader();  
+    fileReader.onload = function() {
+      const formData = new FormData();
+      formData.append('File', file, 'passaporte_bay.pdf');
+
+      Api.convertPdf(formData)
+        .then(result => {
+          if (result && result.success && result.FileData) {
+            Confirm.fire({
+              title: 'Sucesso!',
+              text: 'O seu arquivo PDF foi convertido em texto',
+              type: 'success',
+              confirmButtonText: 'Ok'
+            });
+
+            self.setState({
+              content: result.FileData
+            });
+          } else {
+            Confirm.fire({
+              title: 'Erro!',
+              text: 'Houve um problema ao converter seu arquivo PDF, tente novamente',
+              type: 'error',
+              confirmButtonText: 'Ok'
+            });
+            document.querySelector('#examFile').value = "";
+          }
+        })
+        .catch(() => {
+          Confirm.fire({
+            title: 'Erro!',
+            text: 'Houve um problema ao converter seu arquivo PDF, tente novamente',
+            type: 'error',
+            confirmButtonText: 'Ok'
+          });
+          document.querySelector('#examFile').value = "";
+        });
+    };
+
+    fileReader.readAsDataURL(file);
+  }
+
+  uploadImageCallBack(file) {
+    return new Promise(
+      (resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'https://api.imgur.com/3/image');
+        xhr.setRequestHeader('Authorization', 'Client-ID 20672a121e380ca');
+        const data = new FormData();
+        data.append('image', file);
+        xhr.send(data);
+        xhr.addEventListener('load', () => {
+          const response = JSON.parse(xhr.responseText);
+          resolve(response);
+        });
+        xhr.addEventListener('error', () => {
+          const error = JSON.parse(xhr.responseText);
+          reject(error);
+        });
+      }
+    );
   }
 
   render() {
     const { state } = this;
+    let editorText = '';
+    const contentBlock = htmlToDraft(state.content || '');
+    if (contentBlock) {
+      const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+      const editorState = EditorState.createWithContent(contentState);
+      editorText = editorState;
+    }
+
     return (
       <div className="app-edit-exam">
         <Header {...this.props} />
@@ -105,23 +185,31 @@ class Exam extends React.Component {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="examFile">Importar arquivo PDF</label>
+              <label htmlFor="examFile">Importar arquivo PDF <small>(tamanho máximo de 10MB)</small></label>
               <input
                 type="file"
                 className="form-control-file"
                 id="examFile"
                 accept="application/pdf"
-                onChange={this.handleChange}
+                onChange={this.handleUploadPdf}
               />
             </div>
             <div className="form-group">
               <label htmlFor="text-editor">Editor de conteúdo</label>
-              <FroalaEditorComponent
-                id="text-editor"
-                tag='textarea' 
-                config={this.editorConfig}
-                model={this.state.content}
-                onModelChange={this.handleModelChange}
+              <Editor
+                wrapperClassName="demo-wrapper"
+                editorClassName="demo-editor"
+                placeholder="Digite o conteúdo do exame"
+                toolbar={{
+                  inline: { inDropdown: true },
+                  list: { inDropdown: true },
+                  textAlign: { inDropdown: true },
+                  link: { inDropdown: true },
+                  history: { inDropdown: true },
+                  image: { uploadCallback: this.uploadImageCallBack, previewImage: true },
+                }}
+                defaultEditorState={editorText}
+                onEditorStateChange={this.handleModelChange}
               />
             </div>
             <div className="form-group">
@@ -169,12 +257,13 @@ class Exam extends React.Component {
                 </div>
               </div>  
             }
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className={`btn btn-primary ${state.loading ? 'loading' : ''}`}>
               Salvar
             </button>
             <Link to="/dashboard" className="btn btn-outline-secondary">
               Voltar
             </Link>
+            { state.loading && <div className="loader"></div> }
           </form>
         </div>
       </div>

@@ -13,6 +13,13 @@ const apiFetch = async (url, options) => {
   }
 };
 
+const convertPdf = data => {
+  return apiFetch(`${baseUrl}/convertPdf`, {
+    body: data,
+    method: 'POST'
+  });
+};
+
 const auth = data => {
   return apiFetch(`${baseUrl}/auth`, {
     body: JSON.stringify(data),
@@ -73,6 +80,7 @@ function restApi(Class) {
 
 const Api = {
   auth,
+  convertPdf,
   users: new restApi('users'),
   exams: new restApi('exams')
 };

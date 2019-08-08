@@ -8,6 +8,7 @@ class Login extends React.Component {
   constructor() {
     super();
     this.state = {
+      loading: false,
       controlPanel: true
     };
     this.checkLogin = this.checkLogin.bind(this);
@@ -20,15 +21,27 @@ class Login extends React.Component {
     const { state, props } = this;
     const { history } = props;
 
+    if (state.loading) return;
+
+    this.setState({loading: true});
+
     Api.auth({ login: state.examNumber, password: state.password }).then(result => {
       if (result && result.success && result.data) {
         const userData = result.data;
         props.updateUser(userData);
+        props.updateState({exams: undefined});
         if (userData.level === '2') {
           history.push('/dashboard');
         } else if (userData.exam && !Array.isArray(userData.exam)) {
           history.push(`/exam/view/${userData.exam}`);
         }
+      } else {
+        props.addNotification({
+          type: 'danger',
+          title: 'Mensagem de erro',
+          message: 'Login ou senha inválidos'
+        });
+        this.setState({loading: false});
       }
     });
   }
@@ -65,6 +78,7 @@ class Login extends React.Component {
                 className="form-control"
                 autoFocus
                 id="examNumber"
+                required
                 onChange={this.handleChange}
                 placeholder={state.controlPanel ? 'Digite o login' : 'Digite o número do exame'}
               />
@@ -75,13 +89,15 @@ class Login extends React.Component {
                 type="password"
                 className="form-control"
                 id="password"
+                required
                 onChange={this.handleChange}
                 placeholder="Digite a senha"
               />
             </div>
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className={`btn btn-primary ${state.loading ? 'loading' : ''}`}>
               Entrar
             </button>
+            { state.loading && <div className="loader"></div> }
             {/* <a
               href="/control-panel"
               onClick={this.toggleAdminPanel}

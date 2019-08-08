@@ -13,8 +13,32 @@ code {
     monospace;
 }
 
+@-webkit-keyframes loader {
+  0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg)
+  }
+
+  100% {
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg)
+  }
+}
+
+@keyframes loader {
+  0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg)
+  }
+
+  100% {
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg)
+  }
+}
+
 #root {
-  > div:not(.app-login) {
+  > div:not(.app-login):not(.react-notification-root) {
     padding-bottom: 25px;
   }
 }
@@ -210,6 +234,11 @@ h2.font-22 {
 .btn {
   border-radius: $borderRadius;
 
+  &.loading {
+    pointer-events: none;
+    opacity: .55;
+  }
+
   &.btn-primary {
     color: #7b6a58;
     border-width: $borderRadius;
@@ -240,5 +269,49 @@ h2.font-22 {
 .swal2-styled {
   &.swal2-confirm {
     background-color: #7b6a58;
+  }
+}
+
+.loader {
+  width: 30px;
+  height: 30px;
+  font-size: 10px;
+  border-radius: 50%;
+  position: relative;
+  text-indent: -9999em;
+  margin: 0 auto;
+  border-top: 2px solid rgba(0,0,0,0.2);
+  border-right: 2px solid rgba(0,0,0,0.2);
+  border-bottom: 2px solid rgba(0,0,0,0.2);
+  border-left: 2px solid #000;
+  -webkit-animation: loader 0.8s infinite linear;
+  animation: loader 0.8s infinite linear
+}
+.btn.loading ~ .loader {
+  margin: 0 15px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.rdw-editor-wrapper {
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  padding-bottom: 20px;
+
+  .rdw-editor-toolbar {
+    border: none;
+    margin: 0 auto;
+    padding: 15px 0 5px;
+    width: calc(100% - 30px);
+    border-bottom: 1px solid #eee;
+
+    .rdw-dropdown-wrapper, .rdw-option-wrapper {
+      border: none;
+    }
+  }
+
+  .rdw-editor-main {
+    padding: 0 20px;
+    min-height: 120px;
   }
 }
