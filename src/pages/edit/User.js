@@ -37,7 +37,7 @@ class User extends React.Component {
       if (response.success) {
         Confirm.fire({
           title: 'Sucesso!',
-          text: 'Usuário foi editado',
+          text: 'Usuário editado com sucesso',
           type: 'success',
           confirmButtonText: 'Ok'
         }).then(() => {

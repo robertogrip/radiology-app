@@ -52,7 +52,7 @@ class Exam extends React.Component {
       if (response.success) {
         Confirm.fire({
           title: 'Sucesso!',
-          text: 'Novo exame foi criado',
+          text: 'Exame criado com sucesso',
           type: 'success',
           confirmButtonText: 'Ok'
         }).then(() => {
@@ -209,7 +209,7 @@ class Exam extends React.Component {
                   textAlign: { inDropdown: true },
                   link: { inDropdown: true },
                   history: { inDropdown: true },
-                  image: { uploadCallback: this.uploadImageCallBack, alt: { present: true, mandatory: true } },
+                  image: { uploadCallback: this.uploadImageCallBack, previewImage: true },
                 }}
                 defaultEditorState={editorText}
                 onEditorStateChange={this.handleModelChange}

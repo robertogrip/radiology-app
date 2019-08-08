@@ -47,7 +47,7 @@ class Exam extends React.Component {
       if (response.success) {
         Confirm.fire({
           title: 'Sucesso!',
-          text: 'Novo exame foi criado',
+          text: 'Exame editado com sucesso',
           type: 'success',
           confirmButtonText: 'Ok'
         }).then(() => {
@@ -59,7 +59,7 @@ class Exam extends React.Component {
       } else {
         Confirm.fire({
           title: 'Erro!',
-          text: 'Novo exame não foi criado, tente novamente',
+          text: 'Novo exame não foi editado, tente novamente',
           type: 'error',
           confirmButtonText: 'Ok'
         });

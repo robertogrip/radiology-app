@@ -37,7 +37,7 @@ class User extends React.Component {
       if (response.success) {
         Confirm.fire({
           title: 'Sucesso!',
-          text: 'Novo usuário foi criado',
+          text: 'Usuário criado com sucesso',
           type: 'success',
           confirmButtonText: 'Ok'
         }).then(() => {

@@ -192,7 +192,7 @@ class App extends React.Component {
     return (
       <React.Fragment>
         <ReactNotification ref={this.notificationDOMRef} />
-        <BrowserRouter>
+        <BrowserRouter basename="/resultado">
           <Switch>
             <PropsRoute path="/" exact={true} component={Login} {...this.state} />
             <PrivateRoute path="/exam/list" exact={true} component={ExamList} {...this.state} />
