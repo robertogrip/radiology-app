@@ -142,17 +142,16 @@ class App extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (nextState.user && nextState.user.id && nextState.user.level === "2") {
-      if (!nextState.exams)
-        Api.exams.getAll({ user: nextState.user.id, level: nextState.user.level })
-          .then(result => {
-            const resultExams = (result && result.success && result.data) || null;
-            this.setState({
-              exams: resultExams
-            });
+    if (nextState.user && nextState.user.id) {
+      Api.exams.getAll({ user: nextState.user.id, level: nextState.user.level })
+        .then(result => {
+          const resultExams = (result && result.success && result.data) || null;
+          this.setState({
+            exams: resultExams
           });
+        });
 
-      if (!nextState.users)
+      if (!nextState.users && nextState.user.level === "2")
         Api.users.getAll({ user: nextState.user.id, level: nextState.user.level })
           .then(result => {
             this.setState({

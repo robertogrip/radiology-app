@@ -1,7 +1,7 @@
 /* Frontend code from src/utils/api.js */
 /* Api methods to call /.netlify/functions */
 const headers = { 'Content-Type': 'application/json' };
-const baseUrl = '//localhost';
+const baseUrl = `//${window.location.hostname}/api`;
 
 const apiFetch = async (url, options) => {
   try {

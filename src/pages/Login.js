@@ -8,7 +8,7 @@ class Login extends React.Component {
   constructor() {
     super();
     this.state = {
-      controlPanel: false
+      controlPanel: true
     };
     this.checkLogin = this.checkLogin.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -58,7 +58,7 @@ class Login extends React.Component {
             <div className="brand" />
             <div className="form-group">
               <label htmlFor="examNumber">
-                {state.controlPanel ? 'Usuário' : 'Número do exame'}
+                {state.controlPanel ? 'Login' : 'Número do exame'}
               </label>
               <input
                 type="text"
@@ -66,7 +66,7 @@ class Login extends React.Component {
                 autoFocus
                 id="examNumber"
                 onChange={this.handleChange}
-                placeholder={state.controlPanel ? 'Digite o usuário' : 'Digite o número do exame'}
+                placeholder={state.controlPanel ? 'Digite o login' : 'Digite o número do exame'}
               />
             </div>
             <div className="form-group">
@@ -82,14 +82,14 @@ class Login extends React.Component {
             <button type="submit" className="btn btn-primary">
               Entrar
             </button>
-            <a
+            {/* <a
               href="/control-panel"
               onClick={this.toggleAdminPanel}
               alt="Acessar painel de controle"
               className={`btn btn-inline btn-admin-panel ${state.controlPanel ? 'active' : ''}`}
             >
               Painel de controle
-            </a>
+            </a> */}
           </form>
         </div>
       </div>
