@@ -149,7 +149,7 @@ class App extends React.Component {
   
   shouldComponentUpdate(nextProps, nextState) {
     if (nextState.user && nextState.user.id) {
-      if (!nextState.exams)
+      if (!nextState.exams || !nextState.exams.length){
         Api.exams.getAll({ user: nextState.user.id, level: nextState.user.level })
         .then(result => {
           const resultExams = (result && result.success && result.data) || null;
@@ -157,14 +157,16 @@ class App extends React.Component {
             exams: resultExams
           });
         });
-      
-      if (!nextState.users && nextState.user.level === "2")
+      }
+
+      if ((!nextState.users ||  !nextState.users.length) && nextState.user.level === "2"){
         Api.users.getAll({ user: nextState.user.id, level: nextState.user.level })
           .then(result => {
             this.setState({
               users: (result && result.success && result.data) || null
             });
           });
+      }
     }
 
     return JSON.stringify(this.props) !== JSON.stringify(nextProps) || JSON.stringify(this.state) !== JSON.stringify(nextState);
