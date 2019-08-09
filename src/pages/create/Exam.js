@@ -50,6 +50,15 @@ class Exam extends React.Component {
       user: userOptions !== 'create-user' && user ? user : null 
     }).then(response => {
       if (response.success) {
+        if (userOptions === 'create-user') {
+          Api.users.getAll({ user: user.id, level: user.level })
+          .then(result => {
+            updateState({
+              users: (result && result.success && result.data) || null
+            });
+          });
+        }
+
         Confirm.fire({
           title: 'Sucesso!',
           text: 'Exame criado com sucesso',
@@ -255,7 +264,7 @@ class Exam extends React.Component {
                   <select className="form-control" onChange={this.handleChange} value={this.state.user} id="user">
                     <option value="">Selecionar usuário</option>
                     {(
-                      this.props && this.props.users && this.props.users.map(user => {
+                      this.props && this.props.users && this.props.users.filter(user => user.level !== "2").map(user => {
                         return <option key={user.id} value={user.id}>{user.login}</option>
                       })
                     )}
