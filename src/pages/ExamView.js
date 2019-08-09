@@ -18,8 +18,8 @@ class ExamView extends React.Component {
     }
   }
 
-  printItem(event) {
-
+  printItem() {
+    window.print();
   }
 
   render() {

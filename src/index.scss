@@ -317,3 +317,11 @@ h2.font-22 {
     min-height: 120px;
   }
 }
+
+@media print {
+  .app-exam-view {
+    .btn {
+      display: none;
+    }
+  }
+}

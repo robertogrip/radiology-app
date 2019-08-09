@@ -2,7 +2,8 @@
 /* Api methods to call /.netlify/functions */
 const headers = { 'Content-Type': 'application/json' };
 // const baseUrl = `//${window.location.hostname}/resultado/api`;
-const baseUrl = `//${window.location.hostname}/api`;
+// const baseUrl = `//${window.location.hostname}/api`;
+const baseUrl = `//${window.location.hostname}${process.env.REACT_APP_API_BASE_URL}`;
 
 const apiFetch = async (url, options) => {
   try {
