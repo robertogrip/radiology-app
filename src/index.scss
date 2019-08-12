@@ -318,6 +318,12 @@ h2.font-22 {
   }
 }
 
+.exam-content {
+  img {
+    max-width: 100%;
+  }
+}
+
 @media print {
   .app-exam-view {
     .btn {
