@@ -25,7 +25,6 @@ class Exam extends React.Component {
     };
     this.createItem = this.createItem.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleUploadPdf = this.handleUploadPdf.bind(this);
     this.handleModelChange = this.handleModelChange.bind(this);
   }
 
@@ -51,7 +50,7 @@ class Exam extends React.Component {
     }).then(response => {
       if (response.success) {
         if (userOptions === 'create-user') {
-          Api.users.getAll({ user: user.id, level: user.level })
+          Api.users.getAll({ user: response.data.user, level: '2' })
           .then(result => {
             updateState({
               users: (result && result.success && result.data) || null
@@ -86,57 +85,6 @@ class Exam extends React.Component {
     this.setState({
       content: draftToHtml(convertToRaw(content.getCurrentContent()))
     });
-  }
-
-  handleUploadPdf(event) {
-    const self = this;
-    const file = event.target.files[0];
-  
-    if(!file || file.type !== "application/pdf"){
-      if (file) console.error(file.name, "não é um arquivo pdf.");
-      return;
-    }
-    
-    const fileReader = new FileReader();  
-    fileReader.onload = function() {
-      const formData = new FormData();
-      formData.append('File', file, 'passaporte_bay.pdf');
-
-      Api.convertPdf(formData)
-        .then(result => {
-          if (result && result.success && result.FileData) {
-            Confirm.fire({
-              title: 'Sucesso!',
-              text: 'O seu arquivo PDF foi convertido em texto',
-              type: 'success',
-              confirmButtonText: 'Ok'
-            });
-
-            self.setState({
-              content: result.FileData
-            });
-          } else {
-            Confirm.fire({
-              title: 'Erro!',
-              text: 'Houve um problema ao converter seu arquivo PDF, tente novamente',
-              type: 'error',
-              confirmButtonText: 'Ok'
-            });
-            document.querySelector('#examFile').value = "";
-          }
-        })
-        .catch(() => {
-          Confirm.fire({
-            title: 'Erro!',
-            text: 'Houve um problema ao converter seu arquivo PDF, tente novamente',
-            type: 'error',
-            confirmButtonText: 'Ok'
-          });
-          document.querySelector('#examFile').value = "";
-        });
-    };
-
-    fileReader.readAsDataURL(file);
   }
 
   uploadImageCallBack(file) {
@@ -194,16 +142,6 @@ class Exam extends React.Component {
                 className="form-control"
                 id="description"
                 onChange={this.handleChange}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="examFile">Importar arquivo PDF <small>(tamanho máximo de 10MB)</small></label>
-              <input
-                type="file"
-                className="form-control-file"
-                id="examFile"
-                accept="application/pdf"
-                onChange={this.handleUploadPdf}
               />
             </div>
             <div className="form-group">

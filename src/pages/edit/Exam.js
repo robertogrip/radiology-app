@@ -20,7 +20,6 @@ class Exam extends React.Component {
     this.state = exams.filter(exams => exams.id === match.params.id)[0];
     this.editItem = this.editItem.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleUploadPdf = this.handleUploadPdf.bind(this);
     this.handleModelChange = this.handleModelChange.bind(this);
   }
 
@@ -83,57 +82,6 @@ class Exam extends React.Component {
     });
   }
 
-  handleUploadPdf(event) {
-    const self = this;
-    const file = event.target.files[0];
-  
-    if(!file || file.type !== "application/pdf"){
-      if (file) console.error(file.name, "não é um arquivo pdf.");
-      return;
-    }
-    
-    const fileReader = new FileReader();  
-    fileReader.onload = function() {
-      const formData = new FormData();
-      formData.append('File', file, 'passaporte_bay.pdf');
-
-      Api.convertPdf(formData)
-        .then(result => {
-          if (result && result.success && result.FileData) {
-            Confirm.fire({
-              title: 'Sucesso!',
-              text: 'O seu arquivo PDF foi convertido em texto',
-              type: 'success',
-              confirmButtonText: 'Ok'
-            });
-
-            self.setState({
-              content: result.FileData
-            });
-          } else {
-            Confirm.fire({
-              title: 'Erro!',
-              text: 'Houve um problema ao converter seu arquivo PDF, tente novamente',
-              type: 'error',
-              confirmButtonText: 'Ok'
-            });
-            document.querySelector('#examFile').value = "";
-          }
-        })
-        .catch(() => {
-          Confirm.fire({
-            title: 'Erro!',
-            text: 'Houve um problema ao converter seu arquivo PDF, tente novamente',
-            type: 'error',
-            confirmButtonText: 'Ok'
-          });
-          document.querySelector('#examFile').value = "";
-        });
-    };
-
-    fileReader.readAsDataURL(file);
-  }
-
   uploadImageCallBack(file) {
     return new Promise(
       (resolve, reject) => {
@@ -191,16 +139,6 @@ class Exam extends React.Component {
                 placeholder="Descrição"
                 onChange={this.handleChange}
                 value={state.description}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="examFile">Importar arquivo PDF <small>(tamanho máximo de 10MB)</small></label>
-              <input
-                type="file"
-                className="form-control-file"
-                id="examFile"
-                accept="application/pdf"
-                onChange={this.handleUploadPdf}
               />
             </div>
             <div className="form-group">
