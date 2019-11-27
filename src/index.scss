@@ -132,6 +132,31 @@ code {
     margin-top: 25px;
     padding-left: 280px;
     padding-right: 30px;
+
+    .input-search {
+      width: 0;
+      opacity: 0;
+      height: 38px;
+      padding: 0 15px;
+      margin-right: 5px;
+      visibility: hidden;
+      display: inline-block;
+      vertical-align: middle;
+      transition: all .25s ease-in-out;
+
+      &.active {
+        opacity: 1;
+        visibility: visible;
+        width: calc(100% - 280px);
+      }
+    }
+
+    .button-search {
+      &.active {
+        opacity: .35;
+        box-shadow: inset 2px 2px 5px rgba(0,0,0,.5);
+      }
+    }
   }
 
   &.fixed-normal-navbar {

@@ -88,7 +88,7 @@ class ListUsers extends React.Component {
         const { props } = this;
         if (!props || !props.users || !props.users.length) {
             return null;
-        }
+        }    
 
         return props.users.map((user, index) => {
             return (
