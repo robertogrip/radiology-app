@@ -15,8 +15,8 @@ const apiFetch = async (url, options) => {
   }
 };
 
-const convertPdf = data => {
-  return apiFetch(`${baseUrl}/convertPdf`, {
+const uploadFile = data => {
+  return apiFetch(`${baseUrl}/uploadFile`, {
     body: data,
     method: 'POST'
   });
@@ -82,7 +82,7 @@ function restApi(Class) {
 
 const Api = {
   auth,
-  convertPdf,
+  uploadFile,
   users: new restApi('users'),
   exams: new restApi('exams')
 };
