@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../../node_modules/bootstrap/dist/css/bootstrap.css';
 import { HeaderNormal }  from '../components';
+const baseUrl = `//${window.location.hostname}${process.env.REACT_APP_API_BASE_URL}`;
 
 class ExamView extends React.Component {
   constructor(props) {
@@ -50,6 +51,21 @@ class ExamView extends React.Component {
                   <div className="col-12">
                     <div className="exam-content" dangerouslySetInnerHTML={{__html: state.content || '' }} />
                   </div>
+                  {(state.uploadFiles && state.uploadFiles.length && (
+                    <div className="col-12 upload-files">
+                      <label htmlFor="text-editor">Uploads</label>
+                      <div className="form-group">
+                        <ul>
+                          {state.uploadFiles.map(item => (
+                            <li key={item.id}>
+                              <a href={`${baseUrl}${item.path}`} target="_blank" rel="noopener noreferrer">{item.name}</a>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  )) ||
+                    null}
                 </div>
               </div>
             </div>

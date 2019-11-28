@@ -162,6 +162,13 @@ code {
   &.fixed-normal-navbar {
     margin-top: 25px;
   }
+
+  .remove-file {
+    color: red;
+    border: none;
+    margin-left: 10px;
+    background: none;
+  }
 }
 
 .modal-login {
@@ -349,9 +356,15 @@ h2.font-22 {
   }
 }
 
+.app-exam-view {
+  .upload-files {
+    margin-top: 30px;
+  }
+}
+
 @media print {
   .app-exam-view {
-    .btn {
+    .btn, .upload-files {
       display: none;
     }
   }

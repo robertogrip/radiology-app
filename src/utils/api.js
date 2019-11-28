@@ -9,8 +9,7 @@ const apiFetch = async (url, options) => {
   try {
     const response = await fetch(url, options);
     return response.json();
-  }
-  catch (err) {
+  } catch (err) {
     console.warn('Houve um problema ao se conectar com o servidor, tente novamente.', err);
   }
 };
@@ -19,6 +18,13 @@ const uploadFile = data => {
   return apiFetch(`${baseUrl}/uploadFile`, {
     body: data,
     method: 'POST'
+  });
+};
+
+const removeUploadFile = id => {
+  return apiFetch(`${baseUrl}/uploadFile/${id}`, {
+    headers,
+    method: 'DELETE'
   });
 };
 
@@ -83,6 +89,7 @@ function restApi(Class) {
 const Api = {
   auth,
   uploadFile,
+  removeUploadFile,
   users: new restApi('users'),
   exams: new restApi('exams')
 };

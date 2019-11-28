@@ -28,6 +28,7 @@ class Exam extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleModelChange = this.handleModelChange.bind(this);
     this.onUploadFileHandler = this.onUploadFileHandler.bind(this);
+    this.removeUploadFile = this.removeUploadFile.bind(this);
   }
 
   handleChange(event) {
@@ -144,6 +145,31 @@ class Exam extends React.Component {
         Confirm.fire({
           title: 'Erro!',
           text: 'Não foi possível realizar o upload do arquivo, tente novamente',
+          type: 'error',
+          confirmButtonText: 'Ok'
+        });
+      }
+    });
+  }
+
+  removeUploadFile(id) {
+    const { state } = this;
+    Api.removeUploadFile(id).then(response => {
+      if (response.success) {
+        Confirm.fire({
+          title: 'Sucesso!',
+          text: 'Arquivo deletado com sucesso',
+          type: 'success',
+          confirmButtonText: 'Ok'
+        });
+
+        let { uploadFiles } = state;
+        uploadFiles = uploadFiles.filter(file => file.id !== response.id);
+        this.setState({uploadFiles});
+      } else {
+        Confirm.fire({
+          title: 'Erro!',
+          text: 'Não foi possível deletar o arquivo, tente novamente',
           type: 'error',
           confirmButtonText: 'Ok'
         });
@@ -271,7 +297,8 @@ class Exam extends React.Component {
                   <ul>
                     {state.uploadFiles.map(item => (
                       <li key={item.id}>
-                        <a href={`${baseUrl}${item.path}`}>{item.name}</a>
+                        <a href={`${baseUrl}${item.path}`} target="_blank" rel="noopener noreferrer">{item.name}</a>
+                        <button className="remove-file" type="button" onClick={() => this.removeUploadFile(item.id)}>x</button>
                       </li>
                     ))}
                   </ul>
