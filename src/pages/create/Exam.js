@@ -165,7 +165,7 @@ class Exam extends React.Component {
 
         let { uploadFiles } = state;
         uploadFiles = uploadFiles.filter(file => file.id !== response.id);
-        this.setState({uploadFiles});
+        this.setState({ uploadFiles });
       } else {
         Confirm.fire({
           title: 'Erro!',
@@ -292,13 +292,25 @@ class Exam extends React.Component {
             )}
             <div className="form-group">
               <label htmlFor="text-editor">Uploads</label>
-              {(state.uploadFiles.length && (
+              {(state && state.uploadFiles && state.uploadFiles.length && (
                 <div className="form-group">
                   <ul>
                     {state.uploadFiles.map(item => (
                       <li key={item.id}>
-                        <a href={`${baseUrl}${item.path}`} target="_blank" rel="noopener noreferrer">{item.name}</a>
-                        <button className="remove-file" type="button" onClick={() => this.removeUploadFile(item.id)}>x</button>
+                        <a
+                          href={`${baseUrl}${item.path}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {item.name}
+                        </a>
+                        <button
+                          className="remove-file"
+                          type="button"
+                          onClick={() => this.removeUploadFile(item.id)}
+                        >
+                          x
+                        </button>
                       </li>
                     ))}
                   </ul>
