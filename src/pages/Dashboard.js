@@ -34,8 +34,8 @@ class Dashboard extends React.Component {
         state.term &&
         props.exams.filter(
           item =>
-            item.name.toLowerCase().includes(state.term) ||
-            item.description.toLowerCase().includes(state.term)
+            item.name.toLowerCase().includes(state.term.toLowerCase()) ||
+            item.description.toLowerCase().includes(state.term.toLowerCase())
         )) ||
       props.exams;
 

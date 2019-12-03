@@ -32,7 +32,7 @@ class Users extends React.Component {
     const filteredUsers =
       (state.activeSearch &&
         state.term &&
-        props.users.filter(item => item.login.toLowerCase().includes(state.term))) ||
+        props.users.filter(item => item.login.toLowerCase().includes(state.term.toLowerCase()))) ||
       props.users;
 
     return (
